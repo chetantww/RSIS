@@ -1,0 +1,8 @@
+jugaad-data
+seaborn
+streamlit
+plotly
+pandas
+openpyxl
+gunicorn
+yfinance
