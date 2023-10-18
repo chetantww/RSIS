@@ -1,13 +1,13 @@
 import datetime
+import os
 import pickle
+import warnings
+import zipfile
+
 import numpy as np
 import pandas as pd
 import yfinance as yf
 from jugaad_data.nse import NSELive
-
-import zipfile
-import os
-import warnings
 
 warnings.filterwarnings("ignore")
 
@@ -176,6 +176,7 @@ def _run():
 
     with open(f"last_run.txt", "w") as f:
         f.write(str(datetime.datetime.now()))
+    print("Files are dumped, and updated")
 
 
 def run():
