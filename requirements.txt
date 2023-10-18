@@ -6,3 +6,4 @@ pandas
 openpyxl
 gunicorn
 yfinance
+pytz

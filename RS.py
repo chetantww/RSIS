@@ -6,6 +6,7 @@ import zipfile
 
 import numpy as np
 import pandas as pd
+import pytz
 import yfinance as yf
 from jugaad_data.nse import NSELive
 
@@ -175,15 +176,16 @@ def _run():
         pickle.dump(sector_indices, f)
 
     with open(f"last_run.txt", "w") as f:
-        f.write(str(datetime.datetime.now()))
+        f.write(str(datetime.datetime.now(tz=pytz.timezone('Asia/Kolkata'))))
     print("Files are dumped, and updated")
 
 
 def run():
-    time_rn = datetime.datetime.now()
+    format = "%Y-%m-%d %H:%M:%S.%f%z"
+    time_rn = datetime.datetime.now(tz=pytz.timezone('Asia/Kolkata'))
     if ((not os.path.exists('last_run.txt')) or
             (time_rn - datetime.datetime.strptime(open('last_run.txt').read(),
-                                                  '%Y-%m-%d %H:%M:%S.%f') > datetime.timedelta(days=1)) or (
+                                                  format) > datetime.timedelta(days=1)) or (
                     datetime.datetime.now().hour > 23)):
         _run()
     else:

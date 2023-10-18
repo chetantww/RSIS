@@ -1,17 +1,18 @@
-import pandas as pd
-import seaborn as sns
 import datetime
-from jugaad_data.nse import NSELive
-
-import warnings
-from RS import run
-import streamlit as st
 import pickle
-from matplotlib.colors import Normalize
+import warnings
+
+import pandas as pd
 import plotly.express as px
+import seaborn as sns
+import streamlit as st
+from jugaad_data.nse import NSELive
+from matplotlib.colors import Normalize
+
+from RS import run
+
 warnings.filterwarnings("ignore")
 n = NSELive()
-run()
 input_path = ""
 
 with open(f"{input_path}sector_analysis.pkl", "rb") as f:
@@ -45,8 +46,13 @@ st.title('Relative Strength Strategy')
 option = st.sidebar.selectbox('Task',
                               options=('Top RS Stocks', 'Sectors Analysis', 'Sector Indices'))
 
-if option == 'Top RS Stocks':
+st.button('Update Data', on_click=run)
+with open(f"{input_path}last_run.txt", "r") as f:
+    last_run = f.read()
+st.text(f'Last Updated: {last_run}')
 
+if option == 'Top RS Stocks':
+    run()
     Analysis = st.sidebar.selectbox('Stock Analysis',
                                     options=('Stocks', 'Stocks Sector Distribution'))
 
@@ -61,6 +67,7 @@ if option == 'Top RS Stocks':
         st.write(final_df.nlargest(number_of_stock, columns='RS').sector.value_counts())
 
 if option == 'Sectors Analysis':
+    run()
     st.header('Sector Return Analysis')
     norm = Normalize(vmin=-5, vmax=25)
     cmap = sns.color_palette("RdYlGn", as_cmap=True)
@@ -69,7 +76,7 @@ if option == 'Sectors Analysis':
     st.write(styled_df)
 
 if option == 'Sector Indices':
-
+    run()
     st.header('Sector Indices Equity Curves')
 
     sectors_select = st.sidebar.multiselect('Sectors',
